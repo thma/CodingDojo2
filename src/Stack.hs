@@ -8,6 +8,8 @@ module Stack (
    stackReverse
  ) where
 
+import Data.Map ()
+
 newtype Stack a = Stck [a] deriving (Show, Read, Eq, Ord)
 
 stackNew :: Stack a
@@ -34,4 +36,3 @@ stackIsEmpty _         = False
 stackPeek :: Stack a -> Maybe a
 stackPeek (Stck [])     = Nothing
 stackPeek (Stck (x:_))  = Just x
-

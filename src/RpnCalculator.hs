@@ -6,8 +6,7 @@ import           Data.List.Split (splitOn)
 --import           Data.Stack      (Stack, stackNew, stackPush, stackPop, stackIsEmpty)
 
 -- let's roll our own stack implementation:
-import           Stack           (Stack, stackIsEmpty, stackNew, stackPop,
-                                  stackPush)
+import           Stack           (Stack, stackIsEmpty, stackNew, stackPop, stackPush)
                                   
 rpn :: String -> Integer
 rpn input =

@@ -22,7 +22,7 @@ description:         Please see the README on GitHub at <https://github.com/thma
 dependencies:
 - base >= 4.7 && < 5
 - split
-- Stack
+- containers
 
 library:
   source-dirs: src
@@ -39,3 +39,4 @@ tests:
     - CodingDojo
     - hspec
     - QuickCheck
+    - generic-arbitrary

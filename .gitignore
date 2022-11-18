@@ -4,5 +4,6 @@ CodingDojo.cabal
 stack.yaml
 stack.yaml.lock
 /out/
-.idea/*
+.idea/
 *.iml
+/.idea/
