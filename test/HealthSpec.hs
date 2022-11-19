@@ -4,18 +4,18 @@ module HealthSpec where
 import           Test.Hspec       hiding (it)
 import           TestUtils        (it)         
 import Test.QuickCheck.Property   (property)
-import Test.QuickC.heck
+import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic
 
 import           Health
 
--- emp = Employee {
---   alcoholConsumption = 10,
---   healthAssessment = True,
---   healthControl = True,
---   smokingHabits = NonSmoker,
---   bmi = 28
--- }
+emp = Employee {
+  alcoholConsumption = 50,
+  healthAssessment = False,
+  healthControl = False,
+  smokingHabits = Smoker,
+  bmi = 50
+}
 
 instance Arbitrary SmokerType where
   arbitrary = genericArbitrary
@@ -29,15 +29,12 @@ instance Arbitrary Employee where
 spec :: Spec
 spec =
   describe "Health behaviour based reduction" $ do
-    it "should consider alcohol consumption" $
-      property $ \emp -> do 
-        print emp
-        reduction emp - reduction (emp {alcoholConsumption = 50}) `shouldBe` 30
-    -- it "can not pop from an empty stack" $
-    --   stackPop emptyIntStack `shouldBe` Nothing
-    -- it "pushes and popping is inverse" $
-    --   property $ \n -> stackPop (stackPush emptyIntStack n) `shouldBe` Just (emptyIntStack, n)
-    -- it "peek just gets the top of the stack" $
-    --   property $ \n -> stackPeek (stackPush emptyIntStack n) `shouldBe` Just n
-    -- it "can reverse a stack" $
-    --   property $ \i j k -> stackPeek (stackReverse (stackPush (stackPush (stackPush emptyIntStack i) j) k)) `shouldBe` Just i  
+    it "does consider alcohol consumption" $
+      reduction (emp {alcoholConsumption = 10}) - reduction emp  `shouldBe` 30
+    it "does consider health assessment" $
+      reduction (emp {healthAssessment = True}) - reduction emp  `shouldBe` 25
+    it "does consider annual health control and BMI" $
+      reduction (emp {healthControl = True}) - reduction (emp {healthControl = True, bmi=21}) - reduction (emp {healthControl = True, bmi=28})  `shouldBe` 0
+    it "does consider annual health control and smoking habits" $
+      reduction (emp {healthControl = True, smokingHabits=NonSmoker}) - reduction (emp {healthControl = True, smokingHabits=QuittingSmoker})  `shouldBe` 25
+
