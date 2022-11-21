@@ -2,7 +2,7 @@ module HealthSpec where
 
 -- testing specific stuff
 import           Test.Hspec       hiding (it)
-import           TestUtils        (it)         
+import           TestUtils        (it)
 import Test.QuickCheck.Property   (property)
 import Test.QuickCheck
 import Test.QuickCheck.Arbitrary.Generic
@@ -22,8 +22,13 @@ instance Arbitrary SmokerType where
   shrink = genericShrink
 
 instance Arbitrary Employee where
-  arbitrary = genericArbitrary
-  shrink = genericShrink
+    arbitrary = do
+      alcoholConsumption <- arbitrary
+      healthAssessment <- arbitrary
+      healthControl <- arbitrary
+      smokingHabits <- arbitrary
+      bmi <- arbitrary
+      return $ Employee (alcoholConsumption * 10) healthAssessment healthControl smokingHabits (bmi * 10)
 
 
 spec :: Spec
@@ -38,3 +43,9 @@ spec =
     it "does consider annual health control and smoking habits" $
       reduction (emp {healthControl = True, smokingHabits=NonSmoker}) - reduction (emp {healthControl = True, smokingHabits=QuittingSmoker})  `shouldBe` 25
 
+    it "does consider alcohol consumption - with generated testdata" $
+      property $ \emp -> reduction (emp {alcoholConsumption = 10}) - reduction (emp {alcoholConsumption = 50})  `shouldBe` 30
+    it "does consider health assessment - with generated testdata" $
+      property $ \emp -> reduction (emp {healthAssessment = True}) - reduction (emp {healthAssessment = False})  `shouldBe` 25
+{-    it "does consider annual health control and BMI - with generated testdata" $
+      property $ \emp -> reduction (emp {healthControl = True, smokingHabits = Smoker}) - reduction (emp {healthControl = True, bmi=21, smokingHabits = Smoker}) - reduction (emp {healthControl = True, bmi=28, smokingHabits = Smoker})  `shouldBe` 0    -}  

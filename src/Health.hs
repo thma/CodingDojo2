@@ -1,8 +1,13 @@
-{-# LANGUAGE DeriveGeneric #-}
+--{-# LANGUAGE DeriveGeneric #-}
 
 module Health where
 
 import           GHC.Generics (Generic)
+
+-- | This module implements a payment scheme calculation for a health insurance
+--   https://twitter.com/NicolaLindgren/status/1571127878229831682
+--   We are mainly interested in the proper setup of testcases for this algorithm.
+
 
 data Employee = Employee
   { alcoholConsumption :: Double,
